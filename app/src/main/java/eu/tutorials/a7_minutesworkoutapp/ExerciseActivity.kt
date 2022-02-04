@@ -3,6 +3,7 @@ package eu.tutorials.a7_minutesworkoutapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.View
 import android.widget.Toast
 
 import androidx.appcompat.widget.Toolbar
@@ -13,6 +14,10 @@ class ExerciseActivity : AppCompatActivity() {
     private var binding : ActivityExerciseBinding? = null
     private  var restTimer : CountDownTimer?= null
     private  var restProgress =0
+
+    private  var exerciseTimer : CountDownTimer?= null
+    private  var exerciseProgress =0
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +47,28 @@ class ExerciseActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                Toast.makeText(this@ExerciseActivity, "Here now we will start the exercise", Toast.LENGTH_SHORT).show()
+                setupExerciseView()
+            }
+
+        }.start()
+    }
+
+    private fun setExerciseProgressBar(){
+        binding?.progressBar?.progress = exerciseProgress
+
+        exerciseTimer = object: CountDownTimer(30000,1000){
+            override fun onTick(p0: Long) {
+                exerciseProgress++
+                binding?.progressBarExercise?.progress = 30 - exerciseProgress
+                binding?.tvTimerExercise?.text = (30- exerciseProgress).toString()
+            }
+
+            override fun onFinish() {
+                Toast.makeText(
+                    this@ExerciseActivity,
+                    "30 seconds are over, Let's go to the rest view",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
         }.start()
@@ -56,12 +82,27 @@ class ExerciseActivity : AppCompatActivity() {
         setRestProgressBar()
     }
 
+    private fun setupExerciseView(){
+        binding?.progressBar?.visibility = View.INVISIBLE
+        binding?.tvTitle?.text = "Exercise Name"
+        binding?.flExerciseView?.visibility = View.VISIBLE
+        if (exerciseTimer != null){
+            exerciseTimer?.cancel()
+            exerciseProgress = 0
+        }
+        setExerciseProgressBar()
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
         if (restTimer != null){
             restTimer?.cancel()
             restProgress =0
+        }
+        if (exerciseTimer != null){
+            exerciseTimer?.cancel()
+            exerciseProgress = 0
         }
         binding = null
     }
