@@ -10,7 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 
-import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
 import eu.tutorials.a7_minutesworkoutapp.databinding.ActivityExerciseBinding
 import java.lang.Exception
 import java.util.*
@@ -32,6 +32,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private var player:MediaPlayer? = null
 
+    private var exerciseAdapter: ExerciseStatusAdapter?= null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExerciseBinding.inflate(layoutInflater)
@@ -48,7 +50,17 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             onBackPressed()
         }
         setupRestView()
+        setupExerciseStatusRecyclerView()
     }
+
+    private fun setupExerciseStatusRecyclerView(){
+        binding?.rvExerciseStatus?.layoutManager =
+            LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+
+        exerciseAdapter = ExerciseStatusAdapter(exerciseList!!)
+        binding?.rvExerciseStatus?.adapter = exerciseAdapter
+    }
+
 
     private fun setRestProgressBar(){
         binding?.progressBar?.progress = restProgress
@@ -62,6 +74,10 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
             override fun onFinish() {
                 currentExercisePosition++
+
+                exerciseList!![currentExercisePosition].setIsSelected(true)
+                exerciseAdapter!!.notifyDataSetChanged()
+
                 setupExerciseView()
             }
 
@@ -79,6 +95,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
             override fun onFinish() {
+
+                exerciseList!![currentExercisePosition].setIsSelected(false)
+                exerciseList!![currentExercisePosition].setIsCompleted(true)
+                exerciseAdapter!!.notifyDataSetChanged()
+
                 if (currentExercisePosition < exerciseList?.size!! - 1){
                     setupRestView()
                 }
@@ -93,8 +114,12 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private fun setupRestView(){
 
         try {
-            val soundURI = (Uri.parse())
-        }catch (e : Exception){
+            val soundURI =
+                Uri.parse("android.resource://eu.tutorials.a7_minutesworkoutapp/" + R.raw.press_start)
+            player = MediaPlayer.create(applicationContext, soundURI)
+            player?.isLooping = false // Sets the player to be looping or non-looping.
+            player?.start() // Starts Playback.
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
@@ -111,7 +136,6 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             restTimer?.cancel()
             restProgress =0
         }
-        speakOut("take rest of 10 Seconds")
         binding?.tvUpcomingExerciseName?.text = exerciseList!![currentExercisePosition+ 1].getName()
         setRestProgressBar()
     }
@@ -152,6 +176,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         if (tts != null){
             tts!!.stop()
             tts!!.shutdown()
+        }
+        if (player != null){
+            player!!.stop()
         }
         binding = null
     }
