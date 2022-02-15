@@ -50,9 +50,6 @@
 
     </RadioGroup>
 
-
-
-
     <com.google.android.material.textfield.TextInputLayout
         android:layout_below="@id/rgUnits"
         android:id="@+id/tiMetricUnitWeight"
@@ -71,6 +68,28 @@
             android:inputType="numberDecimal"
             android:textSize="16sp"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_below="@id/rgUnits"
+        android:id="@+id/tiUSMetricUnitWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:boxStrokeColor="@color/colorAccent"
+        app:hintTextColor="@color/colorAccent"
+        android:visibility="gone"
+        tools:visibility="visible"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etUSMetricUnitWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="WEIGHT (in Pounds)"
+            android:inputType="numberDecimal"
+            android:textSize="16sp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_below="@id/tiMetricUnitWeight"
         android:id="@+id/tiMetricUnitHeight"
@@ -86,6 +105,60 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="HEIGHT (in cm)"
+            android:inputType="numberDecimal"
+            android:textSize="16sp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_below="@id/tiMetricUnitWeight"
+        android:layout_centerHorizontal="true"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_below="@id/tiMetricUnitWeight"
+        android:id="@+id/tiMetricUnitHeightFeet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:boxStrokeColor="@color/colorAccent"
+        app:hintTextColor="@color/colorAccent"
+        android:layout_toStartOf="@id/view"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="true"
+        android:visibility="gone"
+        tools:visibility="visible"
+
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etMatricUnitHeightFeet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Feet"
+            android:inputType="numberDecimal"
+            android:textSize="16sp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_below="@id/tiMetricUnitWeight"
+        android:id="@+id/tiMetricUnitHeightInch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_toEndOf="@id/view"
+        app:boxStrokeColor="@color/colorAccent"
+        app:hintTextColor="@color/colorAccent"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"
+        tools:visibility="visible"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etMatricUnitHeightInch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Inch"
             android:inputType="numberDecimal"
             android:textSize="16sp"/>
     </com.google.android.material.textfield.TextInputLayout>
